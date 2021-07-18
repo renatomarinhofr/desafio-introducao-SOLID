@@ -13,12 +13,12 @@ class CreateUserUseCase {
     const userAlreadyExists = this.usersRepository.findByEmail(email);
 
     if (userAlreadyExists) {
-      throw new Error("Email is already in use");
+      throw new Error("User already exists");
     }
 
-    this.usersRepository.create({ name, email });
+    const user = this.usersRepository.create({ name, email });
 
-    return this.usersRepository.create({ name, email });
+    return user;
   }
 }
 
