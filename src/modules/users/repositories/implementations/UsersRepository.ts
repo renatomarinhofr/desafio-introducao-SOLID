@@ -18,21 +18,24 @@ class UsersRepository implements IUsersRepository {
     return UsersRepository.INSTANCE;
   }
 
-  create({ name, email }: ICreateUserDTO): User {
+create({ name, email }: ICreateUserDTO): User {
     const user = new User();
 
     Object.assign(user, {
       name,
       email,
       created_at: new Date(),
-      update_at: new Date()
+      updated_at: new Date(),
     });
     this.users.push(user);
+  
+    return user;
   }
 
-  findById(id: string): User | undefined {
-    const userId = this.users.find((user) => user.id === id);
-    return userId;
+findByEmail(email: string): User | undefined {
+    const user = this.users.find((user) => user.email === email);
+
+    return user;
   }
 
   findByEmail(email: string): User | undefined {
@@ -40,12 +43,11 @@ class UsersRepository implements IUsersRepository {
     return userEmail;
   }
 
-  turnAdmin(receivedUser: User): User {
-    Object.assign(receivedUser, {
-      admin: true,
-      updated_at: new Date()
-    });
-    return receivedUser;
+   turnAdmin(receivedUser: User): User {
+    const user = receivedUser;
+    user.admin = true;
+    user.updated_at = new Date();
+    return user;
   }
 
   list(): User[] {
